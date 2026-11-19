@@ -199,6 +199,22 @@ button { font:inherit; }
   background:#fff;
 }
 
+/* HERO DRAG / SWIPE */
+.hero {
+  touch-action:pan-y;
+  cursor:grab;
+}
+
+.hero.is-dragging {
+  cursor:grabbing;
+}
+
+.hero-slide img {
+  -webkit-user-drag:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
 /* INTRO */
 .intro-strip {
   padding:26px 5.2%;
@@ -1393,6 +1409,79 @@ document.addEventListener('visibilitychange', () => {
   } else {
     startHeroAutoplay();
   }
+});
+
+/* HERO MOUSE DRAG / TOUCH SWIPE */
+let heroDragStartX = null;
+let heroDragStartY = null;
+let heroDragPointerId = null;
+let heroDragged = false;
+
+hero.querySelectorAll('img').forEach(img => {
+  img.draggable = false;
+});
+
+hero.addEventListener('pointerdown', event => {
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+  heroDragStartX = event.clientX;
+  heroDragStartY = event.clientY;
+  heroDragPointerId = event.pointerId;
+  heroDragged = false;
+
+  hero.classList.add('is-dragging');
+  stopHeroAutoplay();
+});
+
+hero.addEventListener('pointermove', event => {
+  if (
+    event.pointerId !== heroDragPointerId ||
+    heroDragStartX === null
+  ) return;
+
+  if (Math.abs(event.clientX - heroDragStartX) > 8) {
+    heroDragged = true;
+  }
+});
+
+function finishHeroDrag(event, cancelled = false) {
+  if (
+    event.pointerId !== heroDragPointerId ||
+    heroDragStartX === null
+  ) return;
+
+  const dx = event.clientX - heroDragStartX;
+  const dy = event.clientY - heroDragStartY;
+
+  heroDragStartX = null;
+  heroDragStartY = null;
+  heroDragPointerId = null;
+
+  hero.classList.remove('is-dragging');
+
+  // 가로로 50px 이상 드래그했을 때만 슬라이드 변경
+  // 세로 스크롤은 기존처럼 유지
+  if (
+    !cancelled &&
+    Math.abs(dx) >= 50 &&
+    Math.abs(dx) > Math.abs(dy) * 1.2
+  ) {
+    showHeroSlide(heroIndex + (dx < 0 ? 1 : -1));
+  }
+
+  startHeroAutoplay();
+}
+
+hero.addEventListener('pointerup', event => {
+  finishHeroDrag(event);
+});
+
+hero.addEventListener('pointercancel', event => {
+  finishHeroDrag(event, true);
+});
+
+hero.addEventListener('dragstart', event => {
+  event.preventDefault();
 });
 
 /* HIDE MISSING HERO IMAGES */
