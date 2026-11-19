@@ -447,6 +447,11 @@ button { font:inherit; }
   color:#6d665c;
 }
 
+/* 상품 전체 클릭 영역 — 수정된 부분 */
+.product {
+  cursor:pointer;
+}
+
 /* CRAFT */
 .craft {
   display:grid;
@@ -611,9 +616,11 @@ button { font:inherit; }
 /* MOBILE */
 @media (max-width:768px) {
   .topline { font-size:9px; }
-  .intro-strip{
-    display: none;
+
+  .intro-strip {
+    display:none;
   }
+
   .header {
     height:72px;
     padding:0 5%;
@@ -651,13 +658,10 @@ button { font:inherit; }
   }
 
   .nav.open { display:flex; }
-
   .utility { gap:12px; }
   .utility a:first-child { display:none; }
-
   .hero { height:580px; }
   .hero-pagination { bottom:20px; }
-
   .intro-strip { justify-content:center; }
   .intro-strip span:not(:first-child) { display:none; }
 
@@ -1139,6 +1143,7 @@ button { font:inherit; }
 
         <div class="product-bottom">
           <span>₩ 280,000</span>
+
           <button
             type="button"
             data-product="프리미엄 수제 먹"
@@ -1162,6 +1167,7 @@ button { font:inherit; }
 
         <div class="product-bottom">
           <span>₩ 180,000</span>
+
           <button
             type="button"
             data-product="프리미엄 붓"
@@ -1185,6 +1191,7 @@ button { font:inherit; }
 
         <div class="product-bottom">
           <span>₩ 35,000</span>
+
           <button
             type="button"
             data-product="전통 한지 (10매)"
@@ -1213,6 +1220,7 @@ button { font:inherit; }
 
         <div class="product-bottom">
           <span>₩ 450,000</span>
+
           <button
             type="button"
             data-product="먹 · 붓 · 한지 세트"
@@ -1278,13 +1286,11 @@ button { font:inherit; }
   <div class="footer-top">
 
     <div class="footer-brand">
-
       <a href="#top" class="footer-logo" aria-label="HEUK 홈">
         <img src="img/logo2.png" alt="HEUK 흑 로고">
       </a>
 
       <small>HEUK · THE ESSENCE OF INK</small>
-
     </div>
 
     <div class="footer-col">
@@ -1318,7 +1324,6 @@ button { font:inherit; }
 <div class="toast" role="status" aria-live="polite"></div>
 
 <script>
-
 /* MOBILE SLIDE DRAWER */
 const toggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.nav');
@@ -1501,12 +1506,14 @@ document.querySelectorAll('.hero-slide img').forEach(img => {
   }
 });
 
-/* PRODUCT NOTIFICATION */
+/* PRODUCT NOTIFICATION — 상품 전체 클릭 적용 */
 const toast = document.querySelector('.toast');
 let toastTimer;
 
-document.querySelectorAll('[data-product]').forEach(button => {
-  button.addEventListener('click', () => {
+document.querySelectorAll('.product').forEach(product => {
+  product.addEventListener('click', () => {
+    const button = product.querySelector('[data-product]');
+
     toast.textContent =
       `${button.dataset.product} — 상품 문의를 준비 중입니다.`;
 
