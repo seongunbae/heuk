@@ -81,6 +81,8 @@ button {
 }
 
 .header-left {
+  grid-column:1;
+  grid-row:1;
   justify-self:start;
 }
 
@@ -97,7 +99,10 @@ button {
   opacity:.55;
 }
 
+/* LOGO CENTER FIX */
 .header-logo {
+  grid-column:2;
+  grid-row:1;
   justify-self:center;
   width:145px;
   height:70px;
@@ -114,6 +119,8 @@ button {
 }
 
 .header-right {
+  grid-column:3;
+  grid-row:1;
   justify-self:end;
   font:500 11px var(--latin);
   letter-spacing:.18em;
@@ -674,6 +681,9 @@ button {
      HEADER
 ========================================== -->
 <header class="header">
+
+  <!-- BACK TO HOME 삭제 -->
+
   <a class="header-logo" href="../index.html" aria-label="HEUK 홈">
     <img src="../img/logo.png" alt="HEUK 흑 로고">
   </a>
@@ -907,7 +917,6 @@ passwordToggle.addEventListener('click', () => {
   );
 
 });
-
 
 /* LOGIN FORM VALIDATION */
 
